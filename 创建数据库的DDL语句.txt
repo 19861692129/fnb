@@ -1,0 +1,29 @@
+CREATE TABLE `student` (
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `student_name` VARCHAR(100) NOT NULL COMMENT '学生名字',
+  `student_id` VARCHAR(20) NOT NULL COMMENT '学生ID (唯一标识)',
+  `college_id` CHAR(3) NOT NULL COMMENT '学院ID',
+  `major_id` INT DEFAULT NULL COMMENT '专业ID',
+  `retest_id` INT NOT NULL COMMENT '复试ID',
+  `mentor_id` INT DEFAULT NULL COMMENT '导师ID',
+  `status` VARCHAR(255) DEFAULT NULL COMMENT '选择状态 0：未选择导师 / 1:已选择导师',
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `student_id` (`student_id`),
+  FOREIGN KEY (`retest_id`) REFERENCES `review_exam_form`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`mentor_id`) REFERENCES `mentor`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='学生表';
+CREATE TABLE `mentor` (
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `mentor_name` VARCHAR(100) NOT NULL COMMENT '导师名字',
+  `mentor_id` VARCHAR(20) NOT NULL COMMENT '导师ID (唯一标识)',
+  `college_id` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '关联学院ID',
+  `major_id` INT NOT NULL COMMENT '关联专业ID',
+  `email` VARCHAR(100) DEFAULT NULL COMMENT '导师邮箱',
+  `phone` VARCHAR(15) DEFAULT NULL COMMENT '导师电话',
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `mentor_id` (`mentor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='导师表';

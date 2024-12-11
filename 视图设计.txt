@@ -1,0 +1,40 @@
+CREATE VIEW ov_candidate_application AS
+SELECT id, admission_ticket_number, name, gender, candidate_category, student_type, undergraduate_school, graduation_date, undergraduate_major, phone, emergency_contact_phone
+FROM review_exam_form;
+CREATE VIEW ov_candidate_results AS
+SELECT ref.id, ref.name, ref.admission_ticket_number, r.total_score, r.evaluation, m.mentor_name
+FROM review_exam_form ref
+JOIN interview_results r ON ref.id = r.review_exam_form_id
+LEFT JOIN mentor m ON ref.preferred_mentor_1 = m.mentor_id;
+CREATE VIEW ov_candidate_mentor_info AS
+SELECT ref.id, ref.name, ref.preferred_mentor_1, ref.preferred_mentor_2, ref.preferred_mentor_3, m.mentor_name
+FROM review_exam_form ref
+LEFT JOIN mentor m ON ref.preferred_mentor_1 = m.mentor_id;
+CREATE VIEW ov_mentor_candidates AS
+SELECT m.mentor_name, s.student_name, s.student_id, s.status
+FROM mentor m
+JOIN student s ON m.id = s.mentor_id;CREATE VIEW ov_mentor_research_direction AS
+SELECT m.mentor_name, m.mentor_id, major.major_name, major.major_code
+FROM mentor m
+JOIN major ON m.major_id = major.id;
+CREATE VIEW ov_mentor_feedback AS
+SELECT m.mentor_name, ref.name, ref.admission_ticket_number, r.evaluation, r.proposed_mentor_signature
+FROM mentor m
+JOIN interview_results r ON m.id = r.proposed_mentor_signature
+JOIN review_exam_form ref ON r.review_exam_form_id = ref.id;
+CREATE VIEW ov_subject_department_overview AS
+SELECT college.college_name, m.mentor_name, s.student_name, major.major_name
+FROM college
+JOIN mentor m ON college.id = m.college_id
+JOIN student s ON m.id = s.mentor_id
+JOIN major ON m.major_id = major.id;
+CREATE VIEW ov_subject_selection_process AS
+SELECT s.student_name, s.student_id, m.mentor_name, ms.selection_status, ms.remarks
+FROM student s
+JOIN mentor m ON s.mentor_id = m.id
+JOIN mentor_student_selection ms ON s.id = ms.student_id;
+CREATE VIEW ov_subject_exam_results AS
+SELECT ref.name, ref.admission_ticket_number, r.total_score, r.evaluation, rr.rejection_reason
+FROM review_exam_form ref
+JOIN interview_results r ON ref.id = r.review_exam_form_id
+LEFT JOIN rejection_record rr ON ref.id = rr.review_exam_form_id;

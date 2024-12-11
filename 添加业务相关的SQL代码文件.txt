@@ -1,0 +1,22 @@
+SELECT 
+    s.student_name,
+    s.student_id,
+    r.total_score,
+    r.evaluation,
+    m.mentor_name,
+    m.emailFROM 
+    student sJOIN 
+    review_exam_form ref ON s.student_id = ref.student_idJOIN 
+    interview_results r ON ref.id = r.review_exam_form_idLEFT JOIN 
+    mentor m ON s.mentor_id = m.idWHERE 
+    s.student_id = '123456';  
+SELECT 
+    m.mentor_name,
+    s.student_name,
+    r.total_score,
+    r.evaluationFROM 
+    mentor mJOIN 
+    student s ON s.mentor_id = m.idJOIN 
+    review_exam_form ref ON s.student_id = ref.student_idJOIN 
+    interview_results r ON ref.id = r.review_exam_form_idWHERE 
+    m.mentor_id = 'mentor_001';  
